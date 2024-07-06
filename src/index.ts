@@ -45,7 +45,7 @@ export const placeToolsPlugin = genkitPlugin(
               {
                 headers: {
                   "Content-Type": "application/json",
-                  "X-Goog-Api-Key": "AIzaSyCJIrZkGH04TIXcP2t8hvo97yKwGmwD-1k",
+                  "X-Goog-Api-Key": `${apiKey}`,
                   "X-Goog-FieldMask": "places.displayName,places.formattedAddress,places.priceLevel,places.photos.name,places.editorialSummary,places.googleMapsUri"
                 }
               }
