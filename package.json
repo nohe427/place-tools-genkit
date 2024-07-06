@@ -6,10 +6,14 @@
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": ["genkit-tools"],
+  "keywords": [
+    "genkit-tools"
+  ],
   "author": "Alexander Nohe",
   "license": "Apache-2.0",
-  "repository": {"url": "https://github.com/nohe427/place-tools-genkit.git"},
+  "repository": {
+    "url": "git+https://github.com/nohe427/place-tools-genkit.git"
+  },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
   },
