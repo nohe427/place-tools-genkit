@@ -1,9 +1,11 @@
 {
   "compileOnSave": true,
+  
   "include": [
     "src"
   ],
   "compilerOptions": {
+    "declaration": true,
     "module": "commonjs",
     "noImplicitReturns": true,
     "outDir": "lib",
