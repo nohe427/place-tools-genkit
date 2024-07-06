@@ -1,15 +1,19 @@
 {
-  "name": "place-tools-genkit",
+  "name": "@nohe427/place-tools-genkit",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
+  "keywords": ["genkit-tools"],
+  "author": "Alexander Nohe",
+  "license": "Apache-2.0",
+  "repository": {"url": "https://github.com/nohe427/place-tools-genkit.git"},
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "description": "A package that contains some tools for Firebase genkit. These tools are focused on the Google Maps API",
   "dependencies": {
     "@genkit-ai/ai": "^0.5.4",
     "@genkit-ai/core": "^0.5.4",
