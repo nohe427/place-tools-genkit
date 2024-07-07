@@ -5,11 +5,12 @@ import { z } from "zod";
 import { PlaceResponse, PlaceToolsOptions } from './common/types';
 
 const pluginName = 'place-tools';
+let apiKey: string | undefined = "";
 
 export const placeToolsPlugin = genkitPlugin(
   pluginName,
   async (options: PlaceToolsOptions) => {
-    const apiKey = options.ApiKey || process.env.MAPS_API_KEY;
+    apiKey = options.ApiKey || process.env.MAPS_API_KEY;
     if (!apiKey) {
         throw new GenkitError({
             source: pluginName,
@@ -56,54 +57,56 @@ export const placeToolsPlugin = genkitPlugin(
             return data as PlaceResponse;
         }
       );
-    defineTool(
+  }
+);
+
+export const geocode = defineTool(
+  {
+    name: "Geocode",
+    description: `Used when needing to convert an address or location to a
+    latitude and longitude value.`,
+    inputSchema: z.string(),
+    outputSchema: z.unknown(),
+  },
+  async (address) => {
+    address = encodeURIComponent(address);
+    const geocodeEndpoint = `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${apiKey}`;
+
+    const  response = await axios.get(geocodeEndpoint);
+    
+    return response.data;
+  }
+);
+
+export const currentAirQuality = defineTool(
+  {
+    name: 'currentAirQualilty',
+    description: `Used to get the current air quality based off a lat, lng
+    location`,
+    inputSchema: z.object({
+      lat: z.number(),
+      lng: z.number(),
+    }),
+    outputSchema: z.unknown(),
+  },
+  async (input) => {
+    const caqiEndpoint = `https://airquality.googleapis.com/v1/currentConditions:lookup?key=${apiKey}`;
+    const basicRequest = {
+      "location": {
+        "latitude": input.lat,
+        "longitude": input.lng,
+      }
+    }
+
+    const  response = await axios.post(
+      caqiEndpoint,
+      JSON.stringify(basicRequest),
       {
-        name: "Geocode",
-        description: `Used when needing to convert an address or location to a
-        latitude and longitude value.`,
-        inputSchema: z.string(),
-        outputSchema: z.unknown(),
-      },
-      async (address) => {
-        address = encodeURIComponent(address);
-        const geocodeEndpoint = `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${apiKey}`;
-  
-        const  response = await axios.get(geocodeEndpoint);
-        
-        return response.data;
+        headers: {
+          "Content-Type": "application/json",
+        }
       }
     );
-    defineTool(
-      {
-        name: 'currentAirQualilty',
-        description: `Used to get the current air quality based off a lat, lng
-        location`,
-        inputSchema: z.object({
-          lat: z.number(),
-          lng: z.number(),
-        }),
-        outputSchema: z.unknown(),
-      },
-      async (input) => {
-        const caqiEndpoint = `https://airquality.googleapis.com/v1/currentConditions:lookup?key=${apiKey}`;
-        const basicRequest = {
-          "location": {
-            "latitude": input.lat,
-            "longitude": input.lng,
-          }
-        }
-
-        const  response = await axios.post(
-          caqiEndpoint,
-          JSON.stringify(basicRequest),
-          {
-            headers: {
-              "Content-Type": "application/json",
-            }
-          }
-        );
-        return response.data;
-      }
-    )
+    return response.data;
   }
 );
