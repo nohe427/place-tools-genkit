@@ -1,4 +1,4 @@
-import { GenkitError, genkitPlugin } from '@genkit-ai/core';
+import { GenkitError, InitializedPlugin, genkitPlugin } from '@genkit-ai/core';
 import { defineTool } from '@genkit-ai/ai';
 import axios from "axios";
 import { z } from "zod";
@@ -57,10 +57,17 @@ export const placeToolsPlugin = genkitPlugin(
             return data as PlaceResponse;
         }
       );
+      return {
+        models: [
+          makeGeocode(apiKey)
+        ]
+      } as InitializedPlugin;
   }
 );
 
-export const geocode = defineTool(
+const makeGeocode = (apiKey: string) => {
+
+const geocode = defineTool(
   {
     name: "Geocode",
     description: `Used when needing to convert an address or location to a
@@ -79,6 +86,9 @@ export const geocode = defineTool(
     return response.data;
   }
 );
+return geocode;
+
+}
 
 export const currentAirQuality = defineTool(
   {
