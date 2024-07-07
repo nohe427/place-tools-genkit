@@ -73,5 +73,36 @@ export const placeToolsPlugin = genkitPlugin(
         return response.data;
       }
     );
+    defineTool(
+      {
+        name: 'currentAirQualilty',
+        description: `Used to get the current air quality based off an x,y location`,
+        inputJsonSchema: z.object({
+          x: z.number(),
+          y: z.number(),
+        }),
+        outputSchema: z.unknown(),
+      },
+      async (input) => {
+        const caqiEndpoint = `https://airquality.googleapis.com/v1/currentConditions:lookup?key=${apiKey}`;
+        const basicRequest = {
+          "location": {
+            "latitude": input.y,
+            "longitude": input.x,
+          }
+        }
+
+        const  response = await axios.post(
+          caqiEndpoint,
+          JSON.stringify(basicRequest),
+          {
+            headers: {
+              "Content-Type": "application/json",
+            }
+          }
+        );
+        return response.data;
+      }
+    )
   }
 );
