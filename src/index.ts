@@ -59,7 +59,7 @@ export const placeToolsPlugin = genkitPlugin(
       );
       return {
         models: [
-          makeGeocode(apiKey)
+          makeGeocode(apiKey), makeAirQuality(apiKey),
         ]
       } as InitializedPlugin;
   }
@@ -69,7 +69,7 @@ const makeGeocode = (apiKey: string) => {
 
 const geocode = defineTool(
   {
-    name: "Geocode",
+    name: "place-tools/geocode",
     description: `Used when needing to convert an address or location to a
     latitude and longitude value. The input to this tool is an address or a place`,
     inputSchema: z.object({
@@ -90,35 +90,39 @@ return geocode;
 
 }
 
-export const currentAirQuality = defineTool(
-  {
-    name: 'currentAirQualilty',
-    description: `Used to get the current air quality based off a lat, lng
-    location`,
-    inputSchema: z.object({
-      lat: z.number(),
-      lng: z.number(),
-    }),
-    outputSchema: z.unknown(),
-  },
-  async (input) => {
-    const caqiEndpoint = `https://airquality.googleapis.com/v1/currentConditions:lookup?key=${apiKey}`;
-    const basicRequest = {
-      "location": {
-        "latitude": input.lat,
-        "longitude": input.lng,
-      }
-    }
 
-    const  response = await axios.post(
-      caqiEndpoint,
-      JSON.stringify(basicRequest),
-      {
-        headers: {
-          "Content-Type": "application/json",
+
+function makeAirQuality(apiKey: string) {
+  return defineTool(
+    {
+      name: 'place-tools/currentAirQualilty',
+      description: `Used to get the current air quality based off a lat, lng
+      location`,
+      inputSchema: z.object({
+        lat: z.number(),
+        lng: z.number(),
+      }),
+      outputSchema: z.unknown(),
+    },
+    async (input) => {
+      const caqiEndpoint = `https://airquality.googleapis.com/v1/currentConditions:lookup?key=${apiKey}`;
+      const basicRequest = {
+        "location": {
+          "latitude": input.lat,
+          "longitude": input.lng,
         }
       }
-    );
-    return response.data;
-  }
-);
+  
+      const  response = await axios.post(
+        caqiEndpoint,
+        JSON.stringify(basicRequest),
+        {
+          headers: {
+            "Content-Type": "application/json",
+          }
+        }
+      );
+      return response.data;
+    }
+  );
+}
