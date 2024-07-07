@@ -65,11 +65,13 @@ export const geocode = defineTool(
     name: "Geocode",
     description: `Used when needing to convert an address or location to a
     latitude and longitude value. The input to this tool is an address or a place`,
-    inputSchema: z.string(),
+    inputSchema: z.object({
+      address: z.string(),
+    }),
     outputSchema: z.unknown(),
   },
-  async (address) => {
-    address = encodeURIComponent(address);
+  async (input) => {
+    const address = encodeURIComponent(input.address);
     const geocodeEndpoint = `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${apiKey}`;
 
     const  response = await axios.get(geocodeEndpoint);
