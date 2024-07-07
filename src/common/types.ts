@@ -9,9 +9,17 @@ export interface Place {
     displayName: LocalizedText,
     editorialSummary: LocalizedText,
     photos: [{name:string}],
-  }
+}
 
-  export interface LocalizedText {
-    text:String,
+export interface LocalizedText {
+    text:string,
     languageCode:string
-  }
+}
+
+export interface PlaceToolsOptions {
+    ApiKey: string,
+}
+  
+export interface GeocodeOptions {
+    address: string,
+}

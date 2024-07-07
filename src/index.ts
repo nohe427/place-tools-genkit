@@ -2,11 +2,7 @@ import { GenkitError, genkitPlugin } from '@genkit-ai/core';
 import { defineTool } from '@genkit-ai/ai';
 import axios from "axios";
 import { z } from "zod";
-import { PlaceResponse } from './common/types';
-
-interface PlaceToolsOptions {
-  ApiKey: String,
-}
+import { PlaceResponse, PlaceToolsOptions } from './common/types';
 
 const pluginName = 'place-tools';
 
@@ -36,11 +32,11 @@ export const placeToolsPlugin = genkitPlugin(
             if (input.typeOfRestaurant == undefined) {
               input.typeOfRestaurant = "Local";
             }
-            const geocodeEndpoint = "https://places.googleapis.com/v1/places:searchText";
+            const placesEndpoint = "https://places.googleapis.com/v1/places:searchText";
             const textQuery = {textQuery: `${input.typeOfRestaurant} restaurants in ${input.place}`};
       
             const  response = await axios.post(
-              geocodeEndpoint,
+              placesEndpoint,
               JSON.stringify(textQuery),
               {
                 headers: {
@@ -60,5 +56,22 @@ export const placeToolsPlugin = genkitPlugin(
             return data as PlaceResponse;
         }
       );
+    defineTool(
+      {
+        name: "Geocode",
+        description: `Used when needing to convert an address or location to an
+        x,y latitude and longitude value.`,
+        inputSchema: z.string(),
+        outputSchema: z.unknown(),
+      },
+      async (address) => {
+        address = encodeURIComponent(address);
+        const geocodeEndpoint = `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${apiKey}`;
+  
+        const  response = await axios.get(geocodeEndpoint);
+        
+        return response.data;
+      }
+    );
   }
 );
