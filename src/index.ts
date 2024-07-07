@@ -64,7 +64,7 @@ export const geocode = defineTool(
   {
     name: "Geocode",
     description: `Used when needing to convert an address or location to a
-    latitude and longitude value.`,
+    latitude and longitude value. The input to this tool is an address or a place`,
     inputSchema: z.string(),
     outputSchema: z.unknown(),
   },
