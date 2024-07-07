@@ -59,8 +59,8 @@ export const placeToolsPlugin = genkitPlugin(
     defineTool(
       {
         name: "Geocode",
-        description: `Used when needing to convert an address or location to an
-        x,y latitude and longitude value.`,
+        description: `Used when needing to convert an address or location to a
+        latitude and longitude value.`,
         inputSchema: z.string(),
         outputSchema: z.unknown(),
       },
@@ -76,10 +76,11 @@ export const placeToolsPlugin = genkitPlugin(
     defineTool(
       {
         name: 'currentAirQualilty',
-        description: `Used to get the current air quality based off an x,y location`,
-        inputJsonSchema: z.object({
-          x: z.number(),
-          y: z.number(),
+        description: `Used to get the current air quality based off a lat, lng
+        location`,
+        inputSchema: z.object({
+          lat: z.number(),
+          lng: z.number(),
         }),
         outputSchema: z.unknown(),
       },
@@ -87,8 +88,8 @@ export const placeToolsPlugin = genkitPlugin(
         const caqiEndpoint = `https://airquality.googleapis.com/v1/currentConditions:lookup?key=${apiKey}`;
         const basicRequest = {
           "location": {
-            "latitude": input.y,
-            "longitude": input.x,
+            "latitude": input.lat,
+            "longitude": input.lng,
           }
         }
 
