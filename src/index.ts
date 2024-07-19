@@ -18,52 +18,13 @@ export const placeToolsPlugin = genkitPlugin(
             message: 'Must supply either `options.ApiKey` or set `MAPS_API_KEY` environment variable.',
         });
     }
-    // defineTool(
-    //     {
-    //       name: 'restaurantFinder',
-    //       description: `Used when needing to find a restaurant based on a users location.
-    //       The location should be used to find nearby restaurants to a place. You can also
-    //       selectively find restaurants based on the users preferences, but you should default
-    //       to 'Local' if there are no indications of restaurant types in the users request.
-    //       `,
-    //       inputSchema: z.object({ place: z.string(), typeOfRestaurant: z.string().optional() }),
-    //       outputSchema: z.unknown(),
-    //     },
-    //     async (input) => {
-    //         if (input.typeOfRestaurant == undefined) {
-    //           input.typeOfRestaurant = "Local";
-    //         }
-    //         const placesEndpoint = "https://places.googleapis.com/v1/places:searchText";
-    //         const textQuery = {textQuery: `${input.typeOfRestaurant} restaurants in ${input.place}`};
-      
-    //         const  response = await axios.post(
-    //           placesEndpoint,
-    //           JSON.stringify(textQuery),
-    //           {
-    //             headers: {
-    //               "Content-Type": "application/json",
-    //               "X-Goog-Api-Key": `${apiKey}`,
-    //               "X-Goog-FieldMask": "places.displayName,places.formattedAddress,places.priceLevel,places.photos.name,places.editorialSummary,places.googleMapsUri"
-    //             }
-    //           }
-    //         );
-    //         console.log(response.data);
-    //         let data = (response.data as PlaceResponse);
-    //         for(let i = 0; i < data.places.length; i++) {
-    //           if (data.places[i].photos) {
-    //             data.places[i].photos = [data.places[i].photos[0]];
-    //           }
-    //         }
-    //         return data as PlaceResponse;
-    //     }
-    //   );
       return {} as InitializedPlugin;
   }
 );
 
 export const rTool = defineTool(
   {
-    name: 'rTool',
+    name: 'place-tools-restaurant-finder',
     description: `Used when needing to find a restaurant based on a users location.
     The location should be used to find nearby restaurants to a place. You can also
     selectively find restaurants based on the users preferences, but you should default
@@ -101,11 +62,9 @@ export const rTool = defineTool(
   }
 );
 
-// const makeGeocode = (apiKey: string) => {
-
  export const geocode = defineTool(
     {
-      name: "geocode",
+      name: "place-tools-geocoder",
       description: `Used when needing to convert an address or location to a
       latitude and longitude value. The input to this tool is an address or a place
       and the output contains a lat, lng location`,
@@ -124,15 +83,9 @@ export const rTool = defineTool(
     }
   );
 
-  // return geocode;
-
-// }
-
-// function makeAirQuality(apiKey: string) {
-  // return defineTool(
 export const currentAirQualilty = defineTool(
     {
-      name: 'currentAirQualilty',
+      name: 'place-tools-currentAirQualilty',
       description: `Used to get the current air quality based off a lat, lng
       location`,
       inputSchema: z.object({
@@ -162,4 +115,3 @@ export const currentAirQualilty = defineTool(
       return response.data;
     }
   );
-// }
