@@ -24,7 +24,7 @@ export const placeToolsPlugin = genkitPlugin(
 
 export const rTool = defineTool(
   {
-    name: 'place-tools-restaurant-finder',
+    name: 'restaurantFinder',
     description: `Used when needing to find a restaurant based on a users location.
     The location should be used to find nearby restaurants to a place. You can also
     selectively find restaurants based on the users preferences, but you should default
@@ -64,7 +64,7 @@ export const rTool = defineTool(
 
  export const geocode = defineTool(
     {
-      name: "place-tools-geocoder",
+      name: "geocoder",
       description: `Used when needing to convert an address or location to a
       latitude and longitude value. The input to this tool is an address or a place
       and the output contains a lat, lng location`,
@@ -85,7 +85,7 @@ export const rTool = defineTool(
 
 export const currentAirQualilty = defineTool(
     {
-      name: 'place-tools-currentAirQualilty',
+      name: 'currentAirQualilty',
       description: `Used to get the current air quality based off a lat, lng
       location`,
       inputSchema: z.object({
