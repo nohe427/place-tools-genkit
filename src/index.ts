@@ -105,7 +105,7 @@ export const rTool = defineTool(
 
  export const geocode = defineTool(
     {
-      name: "place-tools/geocode",
+      name: "geocode",
       description: `Used when needing to convert an address or location to a
       latitude and longitude value. The input to this tool is an address or a place
       and the output contains a lat, lng location`,
@@ -132,7 +132,7 @@ export const rTool = defineTool(
   // return defineTool(
 export const currentAirQualilty = defineTool(
     {
-      name: 'place-tools/currentAirQualilty',
+      name: 'currentAirQualilty',
       description: `Used to get the current air quality based off a lat, lng
       location`,
       inputSchema: z.object({
