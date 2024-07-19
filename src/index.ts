@@ -98,6 +98,7 @@ export const currentTimeAtLocation = defineTool(
     const  response = await axios.get(timeZoneEndpoint);
     const tzr = response.data as TimezoneResponse;
     const timeAtLocation = tzr.dstOffset + tzr.rawOffset + Date.now();
+    console.log("time at location %d", timeAtLocation);
     const out = new Date(timeAtLocation).toLocaleString("en-US", {timeZone: 'UTC'});
     return {humanReadableTime: out, timeZoneId: tzr.timeZoneId}
   });
