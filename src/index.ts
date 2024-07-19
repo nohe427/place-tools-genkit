@@ -97,6 +97,7 @@ export const currentTimeAtLocation = defineTool(
     const timeZoneEndpoint = `https://maps.googleapis.com/maps/api/timezone/json?key=${apiKey}&location=${input.lat},${input.lng}&timestamp=${Date.now()}`
     const  response = await axios.get(timeZoneEndpoint);
     const tzr = response.data as TimezoneResponse;
+    console.log(tzr);
     const timeAtLocation = tzr.dstOffset + tzr.rawOffset + Date.now();
     console.log("time at location %d", timeAtLocation);
     const out = new Date(timeAtLocation).toLocaleString("en-US", {timeZone: 'UTC'});
