@@ -94,14 +94,14 @@ export const currentTimeAtLocation = defineTool(
     outputSchema: z.unknown(),
   },
   async (input) => {
-    const timeZoneEndpoint = `https://maps.googleapis.com/maps/api/timezone/json?key=${apiKey}&location=${input.lat}%2C${input.lng}&timestamp=${Date.now()}`
+    const timeZoneEndpoint = `https://maps.googleapis.com/maps/api/timezone/json?key=${apiKey}&location=${input.lat}%2C${input.lng}&timestamp=${Math.floor(Date.now())}`
     console.log("\n\n\n\n %s", timeZoneEndpoint)
     const  response = await axios.get(timeZoneEndpoint);
     const tzr = response.data as TimezoneResponse;
     console.log(tzr);
-    const timeAtLocation = tzr.dstOffset + tzr.rawOffset + Date.now();
+    const timeAtLocation = tzr.dstOffset + tzr.rawOffset + Math.floor(Date.now()/1000);
     console.log("time at location %d", timeAtLocation);
-    const out = new Date(timeAtLocation).toLocaleString("en-US", {timeZone: 'UTC'});
+    const out = new Date(timeAtLocation*1000).toLocaleString("en-US", {timeZone: 'UTC'});
     return {humanReadableTime: out, timeZoneId: tzr.timeZoneId}
   });
 
