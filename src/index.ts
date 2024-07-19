@@ -65,32 +65,71 @@ export const placeToolsPlugin = genkitPlugin(
   }
 );
 
-const makeGeocode = (apiKey: string) => {
-
-const geocode = defineTool(
+export const rTool = defineTool(
   {
-    name: "place-tools/geocode",
-    description: `Used when needing to convert an address or location to a
-    latitude and longitude value. The input to this tool is an address or a place`,
-    inputSchema: z.object({
-      address: z.string(),
-    }),
+    name: 'rTool',
+    description: `Used when needing to find a restaurant based on a users location.
+    The location should be used to find nearby restaurants to a place. You can also
+    selectively find restaurants based on the users preferences, but you should default
+    to 'Local' if there are no indications of restaurant types in the users request.
+    `,
+    inputSchema: z.object({ place: z.string(), typeOfRestaurant: z.string().optional() }),
     outputSchema: z.unknown(),
   },
   async (input) => {
-    const address = encodeURIComponent(input.address);
-    const geocodeEndpoint = `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${apiKey}`;
+      if (input.typeOfRestaurant == undefined) {
+        input.typeOfRestaurant = "Local";
+      }
+      const placesEndpoint = "https://places.googleapis.com/v1/places:searchText";
+      const textQuery = {textQuery: `${input.typeOfRestaurant} restaurants in ${input.place}`};
 
-    const  response = await axios.get(geocodeEndpoint);
-    
-    return response.data;
+      const  response = await axios.post(
+        placesEndpoint,
+        JSON.stringify(textQuery),
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "X-Goog-Api-Key": `${apiKey}`,
+            "X-Goog-FieldMask": "places.displayName,places.formattedAddress,places.priceLevel,places.photos.name,places.editorialSummary,places.googleMapsUri"
+          }
+        }
+      );
+      console.log(response.data);
+      let data = (response.data as PlaceResponse);
+      for(let i = 0; i < data.places.length; i++) {
+        if (data.places[i].photos) {
+          data.places[i].photos = [data.places[i].photos[0]];
+        }
+      }
+      return data as PlaceResponse;
   }
 );
-return geocode;
+
+const makeGeocode = (apiKey: string) => {
+
+  const geocode = defineTool(
+    {
+      name: "place-tools/geocode",
+      description: `Used when needing to convert an address or location to a
+      latitude and longitude value. The input to this tool is an address or a place`,
+      inputSchema: z.object({
+        address: z.string(),
+      }),
+      outputSchema: z.unknown(),
+    },
+    async (input) => {
+      const address = encodeURIComponent(input.address);
+      const geocodeEndpoint = `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${apiKey}`;
+
+      const  response = await axios.get(geocodeEndpoint);
+      
+      return response.data;
+    }
+  );
+
+  return geocode;
 
 }
-
-
 
 function makeAirQuality(apiKey: string) {
   return defineTool(
