@@ -2,7 +2,7 @@ import { GenkitError, InitializedPlugin, genkitPlugin } from '@genkit-ai/core';
 import { defineTool } from '@genkit-ai/ai';
 import axios from "axios";
 import { z } from "zod";
-import { PlaceResponse, PlaceToolsOptions } from './common/types';
+import { PlaceResponse, PlaceToolsOptions, TimezoneResponse } from './common/types';
 
 const pluginName = 'place-tools';
 let apiKey: string | undefined = "";
@@ -82,6 +82,25 @@ export const rTool = defineTool(
       return response.data;
     }
   );
+
+export const currentTimeAtLocation = defineTool(
+  {
+    name:'currentTimeAtLocation',
+    description: 'Used to get the current time at a location based off of a lat, lng location as well as the time zone id that the location is in.',
+    inputSchema: z.object({
+      lat: z.number(),
+      lng: z.number(),
+    }),
+    outputSchema: z.unknown(),
+  },
+  async (input) => {
+    const timeZoneEndpoint = `https://maps.googleapis.com/maps/api/timezone/json?key=${apiKey}&location=${input.lat},${input.lng}&timestamp=${Date.now()}`
+    const  response = await axios.get(timeZoneEndpoint);
+    const tzr = response.data as TimezoneResponse;
+    const timeAtLocation = tzr.dstOffset + tzr.rawOffset + Date.now();
+    const out = new Date(timeAtLocation).toLocaleString("en-US", {timeZone: 'UTC'});
+    return {humanReadableTime: out, timeZoneId: tzr.timeZoneId}
+  });
 
 export const currentAirQualilty = defineTool(
     {

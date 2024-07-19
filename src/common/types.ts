@@ -23,3 +23,17 @@ export interface PlaceToolsOptions {
 export interface GeocodeOptions {
     address: string,
 }
+
+export interface TimezoneResponse {
+    status: string,
+    dstOffset: number,
+    errorMessage: string,
+    rawOffset: number,
+    timeZoneId: string,
+    timeZoneName: string,
+}
+
+export interface TimezoneOutput {
+    humanReadableTime: string,
+    timeZoneId: string
+}
