@@ -94,7 +94,8 @@ export const currentTimeAtLocation = defineTool(
     outputSchema: z.unknown(),
   },
   async (input) => {
-    const timeZoneEndpoint = `https://maps.googleapis.com/maps/api/timezone/json?key=${apiKey}&location=${input.lat},${input.lng}&timestamp=${Date.now()}`
+    const timeZoneEndpoint = `https://maps.googleapis.com/maps/api/timezone/json?key=${apiKey}&location=${input.lat}%2C${input.lng}&timestamp=${Date.now()}`
+    console.log("\n\n\n\n %s", timeZoneEndpoint)
     const  response = await axios.get(timeZoneEndpoint);
     const tzr = response.data as TimezoneResponse;
     console.log(tzr);
