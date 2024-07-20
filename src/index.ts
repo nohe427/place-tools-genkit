@@ -22,7 +22,7 @@ export const placeToolsPlugin = genkitPlugin(
   }
 );
 
-export const rTool = defineTool(
+export const restaurantFinder = defineTool(
   {
     name: 'restaurantFinder',
     description: `Used when needing to find a restaurant based on a users location.
@@ -62,7 +62,7 @@ export const rTool = defineTool(
   }
 );
 
- export const geocode = defineTool(
+ export const geocoder = defineTool(
     {
       name: "geocoder",
       description: `Used when needing to convert an address or location to a
