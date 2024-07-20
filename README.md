@@ -3,6 +3,8 @@
 This repository is a plugin for Firebase Genkit to help you build your own
 custom agents that rely on the Maps API.
 
+[Demo on YouTube](https://youtu.be/zjFTl2qpvUI?si=u6g-B-AGsNfDPzDD)
+
 # Installation
 
 ## .npmrc configuration
