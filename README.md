@@ -74,7 +74,7 @@ export const mapAgent = defineFlow(
       config: {
         temperature: 1,
       },
-      tools: [currentAirQualilty, currentTimeAtLocation, geocode],
+      tools: [currentAirQualilty, currentTimeAtLocation, geocoder],
     });
 ```
 
@@ -88,7 +88,7 @@ See the [GitHub packages documentation](https://docs.github.com/en/packages/work
 
 `currentAirQuality` and `currentTimeAtLocation` both depend heavily on the
 geocoding utility to convert a place to latitude and longitude coordinates. When
-constructing your flow, just remember to include `geocode` in the tool list for
+constructing your flow, just remember to include `geocoder` in the tool list for
 your flows. Gemini handles the rest!
 
 # Additional Info
