@@ -1,6 +1,6 @@
 {
   "name": "@nohe427/place-tools-genkit",
-  "version": "1.0.26",
+  "version": "1.0.27",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
@@ -8,7 +8,12 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
-    "genkit-tools"
+    "genkit-tools",
+    "genkit",
+    "firebase genkit",
+    "firebase",
+    "genai",
+    "generative ai"
   ],
   "author": "Alexander Nohe",
   "license": "Apache-2.0",
