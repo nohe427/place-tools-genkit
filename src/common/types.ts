@@ -18,6 +18,7 @@ export interface LocalizedText {
 
 export interface PlaceToolsOptions {
     ApiKey?: string,
+    Tools?: string[],
 }
   
 export interface GeocodeOptions {
