@@ -46,13 +46,17 @@ first. Then set your `MAPS_API_KEY` environment variable. Alternatively, you can
 also pass in the API key when initializing the plugin.
 
 ```
-import { placeToolsPlugin } from '@nohe427/place-tools-genkit'
+import { placeToolsPlugin, Tools } from '@nohe427/place-tools-genkit'
 
 configureGenkit({
   plugins: [
     googleCloud(),
     googleAI(),
-    placeToolsPlugin({ApiKey: "MAPS_API_KEY"})
+    placeToolsPlugin({ApiKey:'', Tools: [
+      Tools.currentAirQualilty,
+      Tools.currentTimeAtLocation,
+      Tools.restaurantFinder,
+      Tools.geocoder]}),
   ],
   logLevel: "debug",
   enableTracingAndMetrics: true,
@@ -76,7 +80,10 @@ export const mapAgent = defineFlow(
       config: {
         temperature: 1,
       },
-      tools: [currentAirQualilty, currentTimeAtLocation, geocoder],
+      tools: [
+        Tools.currentAirQualilty,
+        Tools.currentTimeAtLocation,
+        Tools.geocoder],
     });
 ```
 
