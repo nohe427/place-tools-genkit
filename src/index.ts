@@ -18,7 +18,7 @@ export const placeToolsPlugin = genkitPlugin(
         });
     }
 
-    importTools(apiKey, options.Tools || []);
+    await importTools(apiKey, options.Tools || []);
     
     return {} as InitializedPlugin;
   }
