@@ -32,12 +32,12 @@ export async function loadReverseGeocoder(apiKey: string) {
             description: `Used when needing to convert a latitude (lat) and
             longitude (lng) to a physical address or place. The input to this
             tool is a a latitude (lat) and longitude (lng). The output of the
-            tool is a location or a formatted address.`,
+            tool is a location or a formatted address encapsulated in JSON.`,
             inputSchema: z.object({
                 latitude: z.number(),
                 longitude: z.number(),
             }),
-            outputSchema: z.string(),
+            outputSchema: z.unknown(),
         },
         async (input) => {
             const reverseGeocodeEndpoint = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${input.latitude},${input.longitude}&key=${apiKey}`;
