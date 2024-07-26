@@ -8,6 +8,8 @@ export async function loadRestaurantFinder(apiKey: string) {
     {
       name: 'restaurantFinder',
       description: `Used when needing to find a restaurant based on a users location.
+      The users location must be an address or a city location. The location should not be
+      a latitude and longitude value.
       The location should be used to find nearby restaurants to a place. You can also
       selectively find restaurants based on the users preferences, but you should default
       to 'Local' if there are no indications of restaurant types in the users request.
