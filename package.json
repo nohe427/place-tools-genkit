@@ -1,6 +1,6 @@
 {
   "name": "@nohe427/place-tools-genkit",
-  "version": "1.0.32",
+  "version": "1.0.33",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
@@ -24,7 +24,7 @@
     "registry": "https://npm.pkg.github.com"
   },
   "description": "A package that contains some tools for Firebase genkit. These tools are focused on the Google Maps API",
-  "dependencies": {
+  "peerDependencies": {
     "@genkit-ai/ai": "^0.5.4",
     "@genkit-ai/core": "^0.5.4",
     "axios": "^1.7.2"
