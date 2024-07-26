@@ -6,9 +6,9 @@ export { Tools }
 const pluginName = 'place-tools';
 let apiKey: string | undefined = "";
 
-export function placeToolsPlugin(
+export async function placeToolsPlugin(
   params: PlaceToolsOptions
-): PluginProvider {
+): Promise<PluginProvider> {
   const plugin = genkitPlugin(
     pluginName,
     async (options: PlaceToolsOptions) => {
@@ -20,10 +20,10 @@ export function placeToolsPlugin(
               message: 'Must supply either `options.ApiKey` or set `MAPS_API_KEY` environment variable.',
           });
       }
-      await importTools(apiKey, options.Tools || []);
       return {} as InitializedPlugin;
     }
   );
+  await importTools(params.ApiKey!, params.Tools || []);
   return plugin(params);
 }
 
