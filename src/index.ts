@@ -1,4 +1,4 @@
-import { GenkitError, InitializedPlugin, genkitPlugin } from '@genkit-ai/core';
+import { GenkitError, InitializedPlugin, PluginProvider, genkitPlugin } from '@genkit-ai/core';
 import { PlaceToolsOptions } from './common/types';
 import { Tools, importTools } from './tools/index'
 export { Tools }
@@ -6,20 +6,24 @@ export { Tools }
 const pluginName = 'place-tools';
 let apiKey: string | undefined = "";
 
-export const placeToolsPlugin = genkitPlugin(
-  pluginName,
-  async (options: PlaceToolsOptions) => {
-    apiKey = options.ApiKey || process.env.MAPS_API_KEY;
-    if (!apiKey) {
-        throw new GenkitError({
-            source: pluginName,
-            status: 'INVALID_ARGUMENT',
-            message: 'Must supply either `options.ApiKey` or set `MAPS_API_KEY` environment variable.',
-        });
+export function placeToolsPlugin(
+  params: PlaceToolsOptions
+): PluginProvider {
+  const plugin = genkitPlugin(
+    pluginName,
+    async (options: PlaceToolsOptions) => {
+      apiKey = options.ApiKey || process.env.MAPS_API_KEY;
+      if (!apiKey) {
+          throw new GenkitError({
+              source: pluginName,
+              status: 'INVALID_ARGUMENT',
+              message: 'Must supply either `options.ApiKey` or set `MAPS_API_KEY` environment variable.',
+          });
+      }
+      await importTools(apiKey, options.Tools || []);
+      return {} as InitializedPlugin;
     }
+  );
+  return plugin(params);
+}
 
-    await importTools(apiKey, options.Tools || []);
-    
-    return {} as InitializedPlugin;
-  }
-);
