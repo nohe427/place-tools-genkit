@@ -6,9 +6,9 @@ export { Tools }
 const pluginName = 'place-tools';
 let apiKey: string | undefined = "";
 
-export async function placeToolsPlugin(
+export function placeToolsPlugin(
   params: PlaceToolsOptions
-): Promise<PluginProvider> {
+): PluginProvider {
   const plugin = genkitPlugin(
     pluginName,
     async (options: PlaceToolsOptions) => {
@@ -23,7 +23,7 @@ export async function placeToolsPlugin(
       return {} as InitializedPlugin;
     }
   );
-  await importTools(params.ApiKey!, params.Tools || []);
+  importTools(params.ApiKey!, params.Tools || []);
   return plugin(params);
 }
 
